@@ -1,0 +1,14 @@
+name: object_extension
+description: The package extends the functionality of standard Object class
+version: 1.1.0
+repository: https://github.com/iLnaar/object_extension
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  #
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6
