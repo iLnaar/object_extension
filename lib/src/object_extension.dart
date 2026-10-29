@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 /// Extension providing utility methods for [Object] instances.
@@ -232,7 +233,7 @@ extension ObjectExtension on Object {
   /// Currently only supports [String] values.
   /// Throws an [Exception] for unsupported types.
   Uint8List toBytes() {
-    if (this is String) return (this as String).toBytes();
+    if (this is String) return Uint8List.fromList(utf8.encode(this as String));
     throw 'toBytes() function is not implemented for $runtimeType type.';
   }
 }

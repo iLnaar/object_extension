@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:object_extension/src/object_extension.dart';
 
 /// A sample class with various property types to demonstrate
@@ -100,10 +102,23 @@ void toStructuredString2() {
   ));
 }
 
+/// Demonstrates `toBytes()` conversion of a string to [Uint8List].
+void toBytes1() {
+  final text = 'Hello, World!';
+  final bytes = text.toBytes();
+
+  print('Text: "$text"');
+  print('Bytes (Uint8List): $bytes');
+  print('Bytes as hex: ${bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
+  print('Bytes as list: ${bytes.toList()}');
+}
+
 /// Entry point — runs all example demonstrations.
 void main() {
   print('\n----- toStructuredString1() output (Object of Class) -----\n');
   toStructuredString1();
   print('\n----- toStructuredString2() output (Object as Map) -----\n');
   toStructuredString2();
+  print('\n----- toBytes1() output (String to Uint8List) -----\n');
+  toBytes1();
 }
