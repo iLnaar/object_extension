@@ -11,6 +11,7 @@ process and transform the data into an easy-to-understand form.
 | Method | Used for |
 |--------|----------|
 | [`toStructuredString()`](https://pub.dev/documentation/object_extension/latest/object_extension/ObjectExtension/toStructuredString.html) | Allows you to convert any object to a structured text view. You can set the width of indents, the presence of quotes in keys and in string values. For debugging purposes, the function of showing data types is very good. Lists with simple elements of the same type are shown on one line. The same is true for sets. Map entries are always shown each on a separate line |
+| [`toBytes()`](https://pub.dev/documentation/object_extension/latest/object_extension/ObjectExtension/toBytes.html) | Converts a string to a `Uint8List` (byte array). Currently only supports [String] values |
 
 ## Getting started
 
@@ -42,11 +43,11 @@ print(map.toStructuredString(withTypes: true, tabWidth: 4));
 Output:
 
 ```
-_InternalLinkedHashMap<Object, Object> {
+_Map<Object, Object> {
     key1: int 1,
     3: int 100,
     key3: List<String> [ 'a', 'b', 'c' ],
-    key4: _InternalLinkedHashMap<String, String> {
+    key4: _Map<String, String> {
         key41: String 'string41'
     }
 }
@@ -100,4 +101,27 @@ Output:
   },
   property5: [ 5, 55 ]
 }
+```
+
+## Converting strings to bytes
+
+The `toBytes()` method converts a `String` to a `Uint8List`:
+
+```dart
+import 'package:object_extension/object_extension.dart';
+
+final text = 'Hello, World!';
+final bytes = text.toBytes();
+
+print('Text: "$text"');
+print('Bytes (Uint8List): $bytes');
+print('Bytes as hex: ${bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
+```
+
+Output:
+
+```
+Text: "Hello, World!"
+Bytes (Uint8List): [72, 101, 108, 108, 111, 44, 32, 87, 111, 114, 108, 100, 33]
+Bytes as hex: 48 65 6c 6c 6f 2c 20 57 6f 72 6c 64 21
 ```
