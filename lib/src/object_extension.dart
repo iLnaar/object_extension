@@ -1,7 +1,18 @@
 import 'dart:typed_data';
 
+/// Extension providing utility methods for [Object] instances.
 extension ObjectExtension on Object {
 
+  /// Converts this object to a structured string representation.
+  ///
+  /// Supports nested [Map], [List], [Set], and custom objects
+  /// that implement a `toMap()` method.
+  ///
+  /// Parameters:
+  ///   - [stringQuote]: Characters used to wrap string values. Defaults to `"'"`.
+  ///   - [keyQuote]: Characters used to wrap map keys. Defaults to `''` (no quotes).
+  ///   - [withTypes]: Whether to prepend the runtime type to each value. Defaults to `false`.
+  ///   - [tabWidth]: Number of spaces per indentation level. Defaults to `2`.
   String toStructuredString({
     String stringQuote = "'",
     String keyQuote = '',
@@ -17,6 +28,7 @@ extension ObjectExtension on Object {
       level: 0
   );
 
+  /// Recursively converts a value into a structured string.
   String _toStructuredString({
     required Object? value,
     required bool parentIsSimpleList,
@@ -30,15 +42,19 @@ extension ObjectExtension on Object {
     final type = value.runtimeType.toString();
     final showType = withTypes && !parentIsSimpleList ? '$type ' : '';
 
+    // Handle null values
     if (value == null) {
       return '${showType}null';
     }
+    // Handle String values
     if (value is String) {
       return showType + stringQuote + value + stringQuote;
     }
+    // Handle primitive numeric and boolean types
     if (value is bool || value is int || value is double || value is num) {
       return showType + value.toString();
     }
+    // Handle Map types
     if (value is Map) {
       return showType + _mapToStructuredString(
           map: value,
@@ -49,6 +65,7 @@ extension ObjectExtension on Object {
           level: level
       );
     }
+    // Handle List types
     if (value is List) {
       return showType + _listToStructuredString(
           list: value,
@@ -59,6 +76,7 @@ extension ObjectExtension on Object {
           level: level
       );
     }
+    // Handle Set types
     if (value is Set) {
       return showType + _setToStructuredString(
           set: value,
@@ -69,6 +87,7 @@ extension ObjectExtension on Object {
           level: level
       );
     }
+    // Attempt to convert custom objects via toMap()
     try {
       return showType + _mapToStructuredString(
           map: (value as dynamic).toMap(),
@@ -83,6 +102,7 @@ extension ObjectExtension on Object {
     }
   }
 
+  /// Converts a [Map] into a structured, indented string.
   String _mapToStructuredString({
     required Map map,
     required String stringQuote,
@@ -125,6 +145,10 @@ extension ObjectExtension on Object {
     return '$str${tab * level}}';
   }
 
+  /// Converts a [List] into a structured, indented string.
+  ///
+  /// Simple lists (`List<Object>`) are rendered on a single line,
+  /// while nested lists are multi-line with indentation.
   String _listToStructuredString({
     required List list,
     required String stringQuote,
@@ -156,6 +180,10 @@ extension ObjectExtension on Object {
     return '$str${tab * level}]';
   }
 
+  /// Converts a [Set] into a structured, indented string.
+  ///
+  /// Simple sets are rendered on a single line,
+  /// while nested sets are multi-line with indentation.
   String _setToStructuredString({
     required Set set,
     required String stringQuote,
@@ -188,6 +216,8 @@ extension ObjectExtension on Object {
     return '$str${tab * level}}';
   }
 
+  /// Returns the appropriate divider (comma and/or newline) based on
+  /// whether this is the last element and whether the container is simple.
   String _divider(bool last, bool simple) {
     if (last) {
       if (simple) return ' ';
@@ -197,6 +227,10 @@ extension ObjectExtension on Object {
     return ',\n';
   }
 
+  /// Converts this object to a [Uint8List].
+  ///
+  /// Currently only supports [String] values.
+  /// Throws an [Exception] for unsupported types.
   Uint8List toBytes() {
     if (this is String) return (this as String).toBytes();
     throw 'toBytes() function is not implemented for $runtimeType type.';

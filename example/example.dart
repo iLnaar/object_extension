@@ -1,5 +1,7 @@
 import 'package:object_extension/src/object_extension.dart';
 
+/// A sample class with various property types to demonstrate
+/// the `toStructuredString()` extension method.
 class ExampleClass {
   var property1 = 1;
   var property2 = 2.2;
@@ -7,6 +9,8 @@ class ExampleClass {
   var property4 = {'entry1': '4', 'entry2': '44'};
   var property5 = [5, 55];
 
+  /// Converts this instance to a Map representation.
+  /// Required for custom objects to work with `toStructuredString()`.
   Map toMap() => {
     'property1': property1,
     'property2': property2,
@@ -19,18 +23,23 @@ class ExampleClass {
   String toString() => toMap().toString();
 }
 
+/// Demonstrates `toStructuredString()` with a custom class instance.
 void toStructuredString1() {
   final sampleObject = ExampleClass();
 
   print('Sample Object (Object of Class):\n$sampleObject');
 
+  // Default formatting without type annotations
   final structuredObject = sampleObject.toStructuredString();
   print('\nStructured Object:\n$structuredObject');
 
+  // Formatting with type annotations enabled
   final structuredObject2 = sampleObject.toStructuredString(withTypes: true);
   print('\nStructured Object with types:\n$structuredObject2');
 }
 
+/// Demonstrates `toStructuredString()` with a complex nested Map
+/// containing nulls, primitives, maps, lists, and sets.
 void toStructuredString2() {
   final sampleObject = {
     'nullValue': null,
@@ -66,24 +75,32 @@ void toStructuredString2() {
 
   print('Sample Object (Object as Map):\n$sampleObject');
 
+  // Default formatting without type annotations
   final structuredObject = sampleObject.toStructuredString();
   print('\nStructured Object:\n$structuredObject');
 
+  // Formatting with type annotations enabled
   final structuredObject2 = sampleObject.toStructuredString(withTypes: true);
   print('\nStructured Object with types:\n$structuredObject2');
 
   print('\nSome more examples ...');
-  print(3.14.toStructuredString() + '\n');
-  print(3.14.toStructuredString(withTypes: true) + '\n');
-  print({1, 2, 3, 4}.toStructuredString() + '\n');
+  // Simple primitive value
+  print('${3.14.toStructuredString()}\n');
+  // Simple primitive value with type annotation
+  print('${3.14.toStructuredString(withTypes: true)}\n');
+  // Simple Set on a single line
+  print('${{1, 2, 3, 4}.toStructuredString()}\n');
+  // Custom formatting: double-quoted keys/values, 5-space indentation
   print({
     {'key1': 'val1', 'key2': 'val2'},
     [1, 2],
     2
   }.toStructuredString(
-      stringQuote: '"', keyQuote: '"', withTypes: false, tabWidth: 5));
+      stringQuote: '"', keyQuote: '"', withTypes: false, tabWidth: 5
+  ));
 }
 
+/// Entry point — runs all example demonstrations.
 void main() {
   print('\n----- toStructuredString1() output (Object of Class) -----\n');
   toStructuredString1();
